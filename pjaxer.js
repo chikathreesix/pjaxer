@@ -1,6 +1,4 @@
 (function(global){
-  var _isSupported = window.history && window.history.pushState && window.history.replaceState &&
-  !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/);
  
   function Pjaxer(){
     var _callbacks = {};
@@ -13,9 +11,9 @@
       on : on
     };
  
- 
     function initialize(linkSelector, targetSelector){
-      if(!_isSupported){
+      if(!Pjaxer.isSupported){
+        this.isAvailable = false;
         return;
       }
  
@@ -39,6 +37,7 @@
  
       window.history.replaceState(state, document.title);
       window.addEventListener('popstate', _onPopState, false);
+      this.isAvailable = true;
     }
  
  
@@ -215,6 +214,9 @@
       }
     }
   }
+
+  Pjaxer.isSupported = window.history && window.history.pushState && window.history.replaceState &&
+  !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/);
  
   global.Pjaxer = Pjaxer;
  
